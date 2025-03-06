@@ -81,7 +81,6 @@ jobs:
           echo "Raw PACKAGE_DATA:"
           echo "$PACKAGE_DATA" | jq '.data[] | {name: .name, tags: .tags}'
 
-          # Extract identifiers of packages that have the "ready-for-production" tag under .tags.info
           IDENTIFIERS=$(echo "$PACKAGE_DATA" | jq -r '.data[] | select(.tags.info | index("ready-for-production")) | .identifier_perm')
 
           if [ -z "$IDENTIFIERS" ]; then
@@ -89,12 +88,18 @@ jobs:
             exit 1
           fi
 
-          # Promote each package that has the correct tag
           for IDENTIFIER in $IDENTIFIERS; do
             echo "Promoting package: $IDENTIFIER"
-            cloudsmith mv --yes \
+            RESPONSE=$(cloudsmith mv --yes \
               interview-prashant-lahare/staging/$IDENTIFIER \
-              interview-prashant-lahare/production
+              interview-prashant-lahare/${{ env.CLOUDSMITH_PRODUCTION_REPO }} 2>&1) || ERROR_CODE=$?
+
+            echo "Cloudsmith API Response: $RESPONSE"
+            echo "Error Code: $ERROR_CODE"
+
+            if [ ! -z "$ERROR_CODE" ]; then
+              exit $ERROR_CODE
+            fi
           done
         shell: bash
 
