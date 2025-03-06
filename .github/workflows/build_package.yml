@@ -43,5 +43,9 @@ jobs:
           path: dist/
           if-no-files-found: error
           retention-days: 5
+      
+      - name: List dist contents before upload
+        run: ls -la dist/
+    
 
           
