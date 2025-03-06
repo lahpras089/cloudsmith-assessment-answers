@@ -73,7 +73,7 @@ jobs:
           # Promote package using the identifier
           cloudsmith mv --yes \
             interview-prashant-lahare/staging/$IDENTIFIER \
-            interview-prashant-lahare/production
+            interview-prashant-lahare/production-mVP7
         shell: bash
   
 
