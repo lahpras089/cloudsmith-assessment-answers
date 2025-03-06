@@ -46,10 +46,8 @@ jobs:
         shell: bash
         
       - name: Exact repo slung
-        run: cloudsmith list repos interview-prashant-lahare -F json | jq -r '.[] | {name: .name, slug: .slug}'
+        run: cloudsmith list repos interview-prashant-lahare -F json
         shell: bash
-        
-
         
       - name: Get package identifier and Tag the synchronized package
         run: |
