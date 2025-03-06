@@ -9,7 +9,7 @@ Please go through readmeanswer.txt file to find all the 6 issues.
 Also, please check and verify the below files as the fix for all the 6 issues.
 
 1. build_package.yml
-2. promote_package_corrected.yml
+2. promote_package.yml
 3. realease_package.yml
 
 Once the above issues have been fixed, you are required to modify the
