@@ -49,24 +49,54 @@ jobs:
       - name: Get package identifier and promote
         run: |
           # Query for the package and get its identifier
-          PACKAGE_QUERY="filename:${PACKAGE_NAME}-${{ github.event.inputs.package_version }}.tar.gz"
-          echo "PACKAGE_DATA: $PACKAGE_DATA"
+          PACKAGE_QUERY="slug:${PACKAGE_NAME}-0.0.1"
           echo "Searching for package with query: $PACKAGE_QUERY"
-          
-          PACKAGE_DATA=$(cloudsmith list package ${{ env.CLOUDSMITH_NAMESPACE }}/${{ env.CLOUDSMITH_STAGING_REPO }} -q "$PACKAGE_QUERY" -F json || echo "{}")
-          
+
+          PACKAGE_DATA=$(cloudsmith list packages \
+            ${{ env.CLOUDSMITH_NAMESPACE }}/${{ env.CLOUDSMITH_STAGING_REPO }} \
+            -q "$PACKAGE_QUERY" -F json || echo "{}")
+
+          # Debug: Print the JSON response
+          echo "PACKAGE_DATA: $PACKAGE_DATA"
+
           # Extract identifier safely
           IDENTIFIER=$(echo "$PACKAGE_DATA" | jq -r '.data[0].identifier_perm // empty')
-          
+
           if [ -z "$IDENTIFIER" ]; then
             echo "Failed to find package identifier"
             exit 1
           fi
-          
+
           echo "Found package identifier: $IDENTIFIER"
-          
+
           # Promote package using the identifier
           cloudsmith mv --yes \
             ${{ env.CLOUDSMITH_NAMESPACE }}/${{ env.CLOUDSMITH_STAGING_REPO }}/$IDENTIFIER \
-            ${{ env.CLOUDSMITH_PRODUCTION_REPO }}
+            ${{ env.CLOUDSMITH_NAMESPACE }}/${{ env.CLOUDSMITH_PRODUCTION_REPO }}
         shell: bash
+  
+
+      # - name: Get package identifier and promote
+      #   run: |
+      #     # Query for the package and get its identifier
+      #     PACKAGE_QUERY="filename:${PACKAGE_NAME}-${{ github.event.inputs.package_version }}.tar.gz"
+      #     echo "PACKAGE_DATA: $PACKAGE_DATA"
+      #     echo "Searching for package with query: $PACKAGE_QUERY"
+          
+      #     PACKAGE_DATA=$(cloudsmith list package ${{ env.CLOUDSMITH_NAMESPACE }}/${{ env.CLOUDSMITH_STAGING_REPO }} -q "$PACKAGE_QUERY" -F json || echo "{}")
+          
+      #     # Extract identifier safely
+      #     IDENTIFIER=$(echo "$PACKAGE_DATA" | jq -r '.data[0].identifier_perm // empty')
+          
+      #     if [ -z "$IDENTIFIER" ]; then
+      #       echo "Failed to find package identifier"
+      #       exit 1
+      #     fi
+          
+      #     echo "Found package identifier: $IDENTIFIER"
+          
+      #     # Promote package using the identifier
+      #     cloudsmith mv --yes \
+      #       ${{ env.CLOUDSMITH_NAMESPACE }}/${{ env.CLOUDSMITH_STAGING_REPO }}/$IDENTIFIER \
+      #       ${{ env.CLOUDSMITH_PRODUCTION_REPO }}
+      #   shell: bash
