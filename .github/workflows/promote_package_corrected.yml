@@ -13,7 +13,7 @@ on:
 #   CLOUDSMITH_STAGING_REPO: 'staging'
 #   CLOUDSMITH_PRODUCTION_REPO: 'production'
 #   CLOUDSMITH_SERVICE_SLUG: ${{ vars.CLOUDSMITH_SERVICE_SLUG }}
-#   PACKAGE_NAME: 'example_package'
+#   PACKAGE_NAME: 'python-package'
 #   CLOUDSMITH_API_KEY: ${{ secrets.CLOUDSMITH_API_KEY }}  # Add this line
 
 env:
@@ -21,7 +21,7 @@ env:
   CLOUDSMITH_STAGING_REPO: "staging"
   CLOUDSMITH_PRODUCTION_REPO: "production"
   CLOUDSMITH_SERVICE_SLUG: ${{ vars.CLOUDSMITH_SERVICE_SLUG }}
-  PACKAGE_NAME: "example_package"
+  PACKAGE_NAME: "python-package"
   CLOUDSMITH_API_KEY: ${{ secrets.CLOUDSMITH_API_KEY }}
   
 
