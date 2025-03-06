@@ -45,6 +45,10 @@ jobs:
         run: cloudsmith whoami --api-key 72dc5d23b33fae292be21583529f97005a4ad8d4
         shell: bash
         
+      - name: Exact repo slung
+        run: cloudsmith list repos interview-prashant-lahare -F json | jq '.[].slug
+        shell: bash
+        
       - name: Get package identifier and Tag the synchronized package
         run: |
           # List all packages in the repository
