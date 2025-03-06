@@ -38,16 +38,7 @@ jobs:
       - name: List directory contents
         run: ls -la dist/
         shell: bash
-      
-      # - name: Install Cloudsmith CLI
-      #   run: pip install --upgrade cloudsmith-cli
-      #   shell: bash
-      
-      # - name: Authenticate with Cloudsmith
-      #   run: |
-      #     cloudsmith login --api-key ${{ secrets.CLOUDSMITH_API_KEY }}
-      #   shell: bash
-
+        
       - name: Install Cloudsmith CLI
         run: pip install --upgrade cloudsmith-cli
         shell: bash
@@ -61,26 +52,26 @@ jobs:
         run: cloudsmith list repos interview-prashant-lahare
         shell: bash
 
-      # - name: check if api-key is missing
-      #   run: cloudsmith push python interview-prashant-lahare/staging dist/*.tar.gz --api-key= --republish  
-      #   shell: bash
-        
-      # - name: Push package to Cloudsmith
-      #   run: |
-      #     if ! ls dist/*.tar.gz 1> /dev/null 2>&1; then
-      #       echo "No package found to upload"
-      #       exit 1
-      #     fi
-      #     echo "Uploading package to Cloudsmith..."
-      #     cloudsmith push python ${{ env.CLOUDSMITH_NAMESPACE }}/${{ env.CLOUDSMITH_REPOSITORY }} dist/*.tar.gz --republish
-      #   shell: bash
-
-      - name: Debug Cloudsmith Environment Variables
-        run: |
-          echo "CLOUDSMITH_NAMESPACE=${{ env.CLOUDSMITH_NAMESPACE }}"
-          echo "CLOUDSMITH_REPOSITORY=${{ env.CLOUDSMITH_REPOSITORY }}"
-          echo "CLOUDSMITH_API_KEY=${{ secrets.CLOUDSMITH_API_KEY }}"
+      - name: check if api-key is missing
+        run: cloudsmith push python interview-prashant-lahare/staging dist/*.tar.gz --api-key= --republish  
         shell: bash
+        
+      - name: Push package to Cloudsmith
+        run: |
+          if ! ls dist/*.tar.gz 1> /dev/null 2>&1; then
+            echo "No package found to upload"
+            exit 1
+          fi
+          echo "Uploading package to Cloudsmith..."
+          cloudsmith push python ${{ env.CLOUDSMITH_NAMESPACE }}/${{ env.CLOUDSMITH_REPOSITORY }} dist/*.tar.gz --republish
+        shell: bash
+
+      # - name: Debug Cloudsmith Environment Variables
+      #   run: |
+      #     echo "CLOUDSMITH_NAMESPACE=${{ env.CLOUDSMITH_NAMESPACE }}"
+      #     echo "CLOUDSMITH_REPOSITORY=${{ env.CLOUDSMITH_REPOSITORY }}"
+      #     echo "CLOUDSMITH_API_KEY=${{ secrets.CLOUDSMITH_API_KEY }}"
+      #   shell: bash
 
       # - name: Push package to Cloudsmith
       #   run: |
@@ -93,15 +84,3 @@ jobs:
       #       ${{ env.CLOUDSMITH_NAMESPACE }}/${{ env.CLOUDSMITH_REPOSITORY }} \
       #       dist/*.tar.gz --api-key=${{ secrets.CLOUDSMITH_API_KEY }} --republish
       #   shell: bash
-
-      - name: Push package to Cloudsmith
-        run: |
-          if ! ls dist/*.tar.gz 1> /dev/null 2>&1; then
-            echo "No package found to upload"
-            exit 1
-          fi
-          echo "Uploading package to Cloudsmith..."
-          cloudsmith push python \
-            ${{ env.CLOUDSMITH_NAMESPACE }}/${{ env.CLOUDSMITH_REPOSITORY }} \
-            dist/*.tar.gz --api-key=${{ secrets.CLOUDSMITH_API_KEY }} --republish
-        shell: bash
