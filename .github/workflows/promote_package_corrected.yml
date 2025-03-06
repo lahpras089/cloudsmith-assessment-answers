@@ -39,7 +39,7 @@ jobs:
         shell: bash
         
       - name: Ensure correct package
-        run: PACKAGE_QUERY="filename:${PACKAGE_NAME}-0.0.1.tar.gz"
+        run: PACKAGE_QUERY="filename:${PACKAGE_NAME}-0.1.0.tar.gz"
         shell: bash
         
       - name: list all available packages
