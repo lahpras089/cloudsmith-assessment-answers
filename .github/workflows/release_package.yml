@@ -38,7 +38,11 @@ jobs:
       - name: List directory contents
         run: ls -la dist/
         shell: bash
-
+      
+      - name: Install Cloudsmith CLI
+        run: pip install --upgrade cloudsmith-cli
+        shell: bash
+      
       - name: Authenticate with Cloudsmith
         run: |
           cloudsmith login --api-key ${{ secrets.CLOUDSMITH_API_KEY }}
