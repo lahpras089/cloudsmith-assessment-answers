@@ -47,7 +47,7 @@ jobs:
 
       - name: Tag the synchronized package
         run: |
-          PACKAGE_QUERY="filename:${PACKAGE_NAME}-${{ github.event.client_payload.package_version }}.tar.gz"
+          PACKAGE_QUERY="${PACKAGE_NAME}-${{ github.event.client_payload.package_version }}.tar.gz"
           echo "Searching for package with query: $PACKAGE_QUERY"
 
           PACKAGE_DATA=$(cloudsmith list package ${{ env.CLOUDSMITH_NAMESPACE }}/${{ env.CLOUDSMITH_STAGING_REPO }} -q "$PACKAGE_QUERY" -F json || echo "{}")
