@@ -53,8 +53,9 @@ jobs:
           echo "$REPO_DATA"
 
           echo "Extracting repository slugs..."
-          echo "$REPO_DATA" | jq -r '.[] | {name: .name, slug: .slug}'
-        shell: bash  
+          echo "$REPO_DATA" | jq '.'
+        shell: bash
+  
         
       - name: Get package identifier and Tag the synchronized package
         run: |
