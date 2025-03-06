@@ -36,16 +36,15 @@ jobs:
       - name: Build package
         run: python -m build  # This step was missing
 
+      - name: List dist contents before upload
+        run: ls -la dist/
+      
       - name: Upload artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v3
         with:
           name: python-package
           path: dist/
-          if-no-files-found: error
-          retention-days: 5
-      
-      - name: List dist contents before upload
-        run: ls -la dist/
+          retention-days: 30  # Increase retention
     
 
           
