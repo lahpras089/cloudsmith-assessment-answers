@@ -5,12 +5,11 @@ on:
     workflows: ["Build Python Package"]
     types:
       - completed
-
 env:
-  CLOUDSMITH_NAMESPACE: ${{ vars.CLOUDSMITH_NAMESPACE }}
+  CLOUDSMITH_NAMESPACE: "python-project"  # Replace with your actual namespace
   CLOUDSMITH_REPOSITORY: "staging"
   CLOUDSMITH_SERVICE_SLUG: ${{ vars.CLOUDSMITH_SERVICE_SLUG }}
-
+  
 permissions:
   contents: read
   actions: read
