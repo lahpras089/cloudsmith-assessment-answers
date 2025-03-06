@@ -59,6 +59,10 @@ jobs:
       - name: check namespace correct
         run: cloudsmith list repos interview-prashant-lahare
         shell: bash
+
+      - name: check namespace correct
+        run: cloudsmith push python interview-prashant-lahare/staging dist/*.tar.gz --api-key= --republish  
+        shell: bash
         
       # - name: Push package to Cloudsmith
       #   run: |
