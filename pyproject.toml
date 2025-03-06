@@ -3,6 +3,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
+name = "python-package"
 version = "0.1.0"
 
 authors = [
