@@ -45,6 +45,24 @@ jobs:
         run: cloudsmith whoami --api-key 72dc5d23b33fae292be21583529f97005a4ad8d4
         shell: bash
 
+      - name: Tag the synchronized package
+        run: |
+          PACKAGE_QUERY="filename:${PACKAGE_NAME}-${{ github.event.client_payload.package_version }}.tar.gz"
+          echo "Searching for package with query: $PACKAGE_QUERY"
+
+          PACKAGE_DATA=$(cloudsmith list package ${{ env.CLOUDSMITH_NAMESPACE }}/${{ env.CLOUDSMITH_STAGING_REPO }} -q "$PACKAGE_QUERY" -F json || echo "{}")
+          
+          IDENTIFIER=$(echo "$PACKAGE_DATA" | jq -r '.data[0].identifier_perm // empty')
+
+          if [ -z "$IDENTIFIER" ]; then
+            echo "Failed to find package identifier"
+            exit 1
+          fi
+
+          echo "Tagging package with 'ready-for-production'"
+          cloudsmith tag add ${{ env.CLOUDSMITH_NAMESPACE }}/${{ env.CLOUDSMITH_STAGING_REPO }}/$IDENTIFIER ready-for-production
+        shell: bash
+
       - name: Get package identifier and promote
         run: |
           # List all packages in the repository
