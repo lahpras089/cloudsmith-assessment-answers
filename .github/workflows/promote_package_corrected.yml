@@ -44,10 +44,17 @@ jobs:
       - name: API key must have permission
         run: cloudsmith whoami --api-key 72dc5d23b33fae292be21583529f97005a4ad8d4
         shell: bash
-        
-      - name: Exact repo slung
-        run: cloudsmith list repos interview-prashant-lahare -F json
-        shell: bash
+      - name: Debug Cloudsmith Repositories
+        run: |
+          echo "Fetching list of repositories..."
+          REPO_DATA=$(cloudsmith list repos interview-prashant-lahare -F json || echo "[]")
+
+          echo "Raw REPO_DATA:"
+          echo "$REPO_DATA"
+
+          echo "Extracting repository slugs..."
+          echo "$REPO_DATA" | jq -r '.[] | {name: .name, slug: .slug}'
+        shell: bash  
         
       - name: Get package identifier and Tag the synchronized package
         run: |
@@ -106,8 +113,6 @@ jobs:
             fi
           done
         shell: bash
-
-
   
       # - name: Promote tagged packages
       #   run: |
