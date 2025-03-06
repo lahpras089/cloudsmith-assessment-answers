@@ -26,7 +26,7 @@ jobs:
         shell: bash
         
       - name: List cloudsmith packages
-        run: cloudsmith list packages interview-prashant-lahare/staging
+        run: cloudsmith list packages ${{ env.CLOUDSMITH_NAMESPACE }}/${{ env.CLOUDSMITH_STAGING_REPO }}
         shell: bash
         
       - name: Ensure correct package
@@ -34,20 +34,20 @@ jobs:
         shell: bash
         
       - name: list all available packages
-        run: cloudsmith list packages interview-prashant-lahare/staging -F json | jq '.data[].slug'
+        run: cloudsmith list packages ${{ env.CLOUDSMITH_NAMESPACE }}/${{ env.CLOUDSMITH_STAGING_REPO }} -F json | jq '.data[].slug'
         shell: bash  
       
       - name: list all repos
-        run: cloudsmith list repos interview-prashant-lahare
+        run: cloudsmith list repos ${{ env.CLOUDSMITH_NAMESPACE }}
         shell: bash 
         
       - name: API key must have permission
-        run: cloudsmith whoami --api-key 72dc5d23b33fae292be21583529f97005a4ad8d4
+        run: cloudsmith whoami --api-key ${{ secrets.CLOUDSMITH_API_KEY }}
         shell: bash
       - name: Debug Cloudsmith Repositories
         run: |
           echo "Fetching list of repositories..."
-          REPO_DATA=$(cloudsmith list repos interview-prashant-lahare -F json || echo "[]")
+          REPO_DATA=$(cloudsmith list repos ${{ env.CLOUDSMITH_NAMESPACE }} -F json || echo "[]")
 
           echo "Raw REPO_DATA:"
           echo "$REPO_DATA"
@@ -61,7 +61,7 @@ jobs:
         run: |
           # List all packages in the repository
           echo "Fetching all packages in staging repository..."
-          PACKAGE_DATA=$(cloudsmith list packages interview-prashant-lahare/staging -F json || echo "{}")
+          PACKAGE_DATA=$(cloudsmith list packages ${{ env.CLOUDSMITH_NAMESPACE }}/${{ env.CLOUDSMITH_STAGING_REPO }} -F json || echo "{}")
 
           # Debug: Print the response to check package details
           echo "PACKAGE_DATA: $PACKAGE_DATA"
@@ -74,21 +74,16 @@ jobs:
             echo "No matching package found in staging!"
             exit 1
           fi
-
+          
           echo "Found package identifier: $IDENTIFIER"
           echo "Tagging package with 'ready-for-production'"
           cloudsmith tag add ${{ env.CLOUDSMITH_NAMESPACE }}/${{ env.CLOUDSMITH_STAGING_REPO }}/$IDENTIFIER ready-for-production
-
-          # Promote package using the identifier
-          # cloudsmith mv --yes \
-          #   interview-prashant-lahare/staging/$IDENTIFIER \
-          #   interview-prashant-lahare/production-mVP7
         shell: bash
         
       - name: Get package identifier and promote
         run: |
           echo "Fetching all packages from staging..."
-          PACKAGE_DATA=$(cloudsmith list packages interview-prashant-lahare/staging -F json || echo "{}")
+          PACKAGE_DATA=$(cloudsmith list packages ${{ env.CLOUDSMITH_NAMESPACE }}/${{ env.CLOUDSMITH_STAGING_REPO }} -F json || echo "{}")
 
           echo "Raw PACKAGE_DATA:"
           echo "$PACKAGE_DATA" | jq '.data[] | {name: .name, tags: .tags}'
@@ -108,24 +103,4 @@ jobs:
           done
         shell: bash
   
-      # - name: Promote tagged packages
-      #   run: |
-      #     echo "Fetching all packages tagged with 'ready-for-production'"
-
-      #     PACKAGE_DATA=$(cloudsmith list package ${{ env.CLOUDSMITH_NAMESPACE }}/${{ env.CLOUDSMITH_STAGING_REPO }} --tag ready-for-production -F json || echo "{}")
-
-      #     IDENTIFIERS=$(echo "$PACKAGE_DATA" | jq -r '.data[].identifier_perm')
-
-      #     if [ -z "$IDENTIFIERS" ]; then
-      #       echo "No packages found with 'ready-for-production' tag"
-      #       exit 1
-      #     fi
-
-      #     for IDENTIFIER in $IDENTIFIERS; do
-      #       echo "Promoting package: $IDENTIFIER"
-      #       cloudsmith mv --yes \
-      #         ${{ env.CLOUDSMITH_NAMESPACE }}/${{ env.CLOUDSMITH_STAGING_REPO }}/$IDENTIFIER \
-      #         ${{ env.CLOUDSMITH_PRODUCTION_REPO }}
-      #     done
-      #   shell: bash  
-      
+    
