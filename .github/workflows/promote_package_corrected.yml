@@ -74,15 +74,17 @@ jobs:
 
           echo "Found package identifier: $IDENTIFIER"
 
+          cloudsmith mv --yes interview-prashant-lahare/staging/$IDENTIFIER interview-prashant-lahare/production-mVP7
+
           # Promote package using the identifier
           # cloudsmith mv --yes \
           #   interview-prashant-lahare/staging/$IDENTIFIER \
           #   interview-prashant-lahare/production-mVP7
         shell: bash
       
-      - name: move the package
-        run: cloudsmith mv --yes interview-prashant-lahare/staging/$IDENTIFIER interview-prashant-lahare/production-mVP7
-        shell: bash
+      # - name: move the package
+      #   run: cloudsmith mv --yes interview-prashant-lahare/staging/$IDENTIFIER interview-prashant-lahare/production-mVP7
+      #   shell: bash
 
   
 
