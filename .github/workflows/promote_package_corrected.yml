@@ -65,7 +65,7 @@ jobs:
 
           # Extract identifier
           IDENTIFIER=$(echo "$PACKAGE_DATA" | jq -r '.data[0].identifier_perm // empty')
-
+      
           # Check if identifier is empty
           if [ -z "$IDENTIFIER" ] || [ "$IDENTIFIER" == "empty" ]; then
             echo "No matching package found in staging!"
@@ -75,10 +75,15 @@ jobs:
           echo "Found package identifier: $IDENTIFIER"
 
           # Promote package using the identifier
-          cloudsmith mv --yes \
-            interview-prashant-lahare/staging/$IDENTIFIER \
-            interview-prashant-lahare/production-mVP7
+          # cloudsmith mv --yes \
+          #   interview-prashant-lahare/staging/$IDENTIFIER \
+          #   interview-prashant-lahare/production-mVP7
         shell: bash
+      
+      - name: move the package
+        run: cloudsmith mv --yes interview-prashant-lahare/staging/$IDENTIFIER interview-prashant-lahare/production-mVP7
+        shell: bash
+
   
 
       # - name: Get package identifier and promote
