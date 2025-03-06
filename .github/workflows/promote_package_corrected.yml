@@ -56,6 +56,10 @@ jobs:
         run: cloudsmith list packages interview-prashant-lahare/staging -F json | jq '.data[].slug'
         shell: bash
 
+      - name: package identifier
+        run: echo "PACKAGE_DATA: $PACKAGE_DATA"
+        shell: bash
+
       - name: Get package identifier and promote
         run: |
           # Query for the package and get its identifier
