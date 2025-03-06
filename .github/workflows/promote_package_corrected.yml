@@ -72,3 +72,23 @@ jobs:
           #   interview-prashant-lahare/staging/$IDENTIFIER \
           #   interview-prashant-lahare/production-mVP7
         shell: bash
+      - name: Promote tagged packages
+        run: |
+          echo "Fetching all packages tagged with 'ready-for-production'"
+
+          PACKAGE_DATA=$(cloudsmith list package ${{ env.CLOUDSMITH_NAMESPACE }}/${{ env.CLOUDSMITH_STAGING_REPO }} --tag ready-for-production -F json || echo "{}")
+
+          IDENTIFIERS=$(echo "$PACKAGE_DATA" | jq -r '.data[].identifier_perm')
+
+          if [ -z "$IDENTIFIERS" ]; then
+            echo "No packages found with 'ready-for-production' tag"
+            exit 1
+          fi
+
+          for IDENTIFIER in $IDENTIFIERS; do
+            echo "Promoting package: $IDENTIFIER"
+            cloudsmith mv --yes \
+              ${{ env.CLOUDSMITH_NAMESPACE }}/${{ env.CLOUDSMITH_STAGING_REPO }}/$IDENTIFIER \
+              ${{ env.CLOUDSMITH_PRODUCTION_REPO }}
+          done
+        shell: bash  
