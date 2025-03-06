@@ -49,6 +49,10 @@ jobs:
       - name: list all repos
         run: cloudsmith list repos interview-prashant-lahare
         shell: bash 
+        
+      - name: API key must have permission
+        run: cloudsmith whoami --api-key 72dc5d23b33fae292be21583529f97005a4ad8d4
+        shell: bash
 
       - name: Get package identifier and promote
         run: |
