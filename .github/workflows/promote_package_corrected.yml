@@ -47,6 +47,10 @@ jobs:
       - name: List cloudsmith packages
         run: cloudsmith list packages interview-prashant-lahare/staging
         shell: bash
+        
+      - name: Ensure correct package
+        run: PACKAGE_QUERY="filename:${PACKAGE_NAME}-0.0.1.tar.gz"
+        shell: bash
 
       - name: Get package identifier and promote
         run: |
