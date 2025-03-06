@@ -49,7 +49,7 @@ jobs:
       - name: Get package identifier and promote
         run: |
           # Query for the package and get its identifier
-          PACKAGE_QUERY="filename:${PACKAGE_NAME}-${{ github.event.inputs.package_version }}.tar.gz"
+          PACKAGE_QUERY="${PACKAGE_NAME}-${{ github.event.inputs.package_version }}.tar.gz"
           echo "PACKAGE_DATA: $PACKAGE_DATA"
           echo "Searching for package with query: $PACKAGE_QUERY"
           
