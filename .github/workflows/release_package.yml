@@ -60,7 +60,7 @@ jobs:
         run: cloudsmith list repos interview-prashant-lahare
         shell: bash
 
-      - name: check namespace correct
+      - name: check if api-key is missing
         run: cloudsmith push python interview-prashant-lahare/staging dist/*.tar.gz --api-key= --republish  
         shell: bash
         
