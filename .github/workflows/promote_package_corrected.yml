@@ -45,6 +45,10 @@ jobs:
       - name: list all available packages
         run: cloudsmith list packages interview-prashant-lahare/staging -F json | jq '.data[].slug'
         shell: bash  
+      
+      - name: list all repos
+        run: cloudsmith list repos interview-prashant-lahare
+        shell: bash 
 
       - name: Get package identifier and promote
         run: |
