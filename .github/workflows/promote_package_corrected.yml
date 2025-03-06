@@ -8,13 +8,22 @@ on:
         required: true
         type: string
 
+# env:
+#   CLOUDSMITH_NAMESPACE: ${{ vars.CLOUDSMITH_NAMESPACE }}
+#   CLOUDSMITH_STAGING_REPO: 'staging'
+#   CLOUDSMITH_PRODUCTION_REPO: 'production'
+#   CLOUDSMITH_SERVICE_SLUG: ${{ vars.CLOUDSMITH_SERVICE_SLUG }}
+#   PACKAGE_NAME: 'example_package'
+#   CLOUDSMITH_API_KEY: ${{ secrets.CLOUDSMITH_API_KEY }}  # Add this line
+
 env:
-  CLOUDSMITH_NAMESPACE: ${{ vars.CLOUDSMITH_NAMESPACE }}
-  CLOUDSMITH_STAGING_REPO: 'staging'
-  CLOUDSMITH_PRODUCTION_REPO: 'production'
+  CLOUDSMITH_NAMESPACE: "interview-prashant-lahare"  # Replace with the actual namespace
+  CLOUDSMITH_STAGING_REPO: "staging"
+  CLOUDSMITH_PRODUCTION_REPO: "production"
   CLOUDSMITH_SERVICE_SLUG: ${{ vars.CLOUDSMITH_SERVICE_SLUG }}
-  PACKAGE_NAME: 'example_package'
-  CLOUDSMITH_API_KEY: ${{ secrets.CLOUDSMITH_API_KEY }}  # Add this line
+  PACKAGE_NAME: "example_package"
+  CLOUDSMITH_API_KEY: ${{ secrets.CLOUDSMITH_API_KEY }}
+  
 
 
 permissions:
