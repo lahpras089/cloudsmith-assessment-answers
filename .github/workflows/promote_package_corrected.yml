@@ -43,6 +43,10 @@ jobs:
       - name: Install Cloudsmith CLI
         run: pip install --upgrade cloudsmith-cli
         shell: bash
+        
+      - name: List cloudsmith packages
+        run: cloudsmith list packages interview-prashant-lahare/staging
+        shell: bash
 
       - name: Get package identifier and promote
         run: |
