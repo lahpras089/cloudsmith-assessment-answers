@@ -75,13 +75,14 @@ jobs:
         
       - name: Get package identifier and promote
         run: |
-          echo "Fetching all packages tagged with 'ready-for-production'"
-
-          # Fetch all packages in JSON format
+          echo "Fetching all packages from staging..."
           PACKAGE_DATA=$(cloudsmith list packages interview-prashant-lahare/staging -F json || echo "{}")
 
+          echo "Raw PACKAGE_DATA:"
+          echo "$PACKAGE_DATA" | jq '.data[] | {name: .name, tags: .tags}'
+
           # Extract identifiers of packages that have the "ready-for-production" tag
-          IDENTIFIERS=$(echo "$PACKAGE_DATA" | jq -r '.data[] | select(.tags.version | index("ready-for-production")) | .identifier_perm')
+          IDENTIFIERS=$(echo "$PACKAGE_DATA" | jq -r '.data[] | select(.tags | contains({version: ["ready-for-production"]})) | .identifier_perm')
 
           if [ -z "$IDENTIFIERS" ]; then
             echo "No packages found with 'ready-for-production' tag"
@@ -96,6 +97,7 @@ jobs:
               interview-prashant-lahare/production
           done
         shell: bash
+
   
       # - name: Promote tagged packages
       #   run: |
